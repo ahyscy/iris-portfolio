@@ -1,0 +1,24 @@
+# macOS metadata
+.DS_Store
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+credentials*
+secrets*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local-only configuration
+*.local
+.local/
+
+# Logs and generated output
+*.log
+coverage/
+dist/
+build/
+node_modules/
