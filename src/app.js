@@ -10,6 +10,27 @@ const menuToggle = $("#menu-toggle");
 const nav = $(".nav");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+function renderTranslatedGroups(target, groups, classes) {
+  const fragment = document.createDocumentFragment();
+  groups.forEach(({ label, items }) => {
+    const card = document.createElement("article");
+    card.className = classes.card;
+    const heading = document.createElement("h3");
+    heading.className = classes.heading;
+    heading.textContent = label;
+    const list = document.createElement("ul");
+    list.className = classes.list;
+    items.forEach((item) => {
+      const entry = document.createElement("li");
+      entry.textContent = item;
+      list.append(entry);
+    });
+    card.append(heading, list);
+    fragment.append(card);
+  });
+  target.replaceChildren(fragment);
+}
+
 function setLanguage(next) {
   language = next;
   document.documentElement.lang = next === "zh" ? "zh-CN" : "en";
@@ -20,6 +41,12 @@ function setLanguage(next) {
   $$('[data-i18n-html]').forEach((node) => {
     const value = translations[next][node.dataset.i18nHtml];
     if (value) node.innerHTML = value;
+  });
+  renderTranslatedGroups($("#coursework-groups"), translations[next].courseworkGroups, {
+    card: "coursework-card", heading: "coursework-category", list: "coursework-list",
+  });
+  renderTranslatedGroups($("#software-groups"), translations[next].softwareGroups, {
+    card: "software-card", heading: "software-category", list: "software-list",
   });
   $$('[data-profile]').forEach((node) => {
     if (next === "en" && profile[node.dataset.profile]) {
